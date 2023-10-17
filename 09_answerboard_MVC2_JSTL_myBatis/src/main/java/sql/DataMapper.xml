@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hk.ans">
+   
+   <select id="boardList" resultType="AnsDto">
+      SELECT seq, id, title, content, regdate,
+      refer,step,depth,readcount,delflag
+      FROM answerboard
+      ORDER BY refer DESC, step
+   
+   </select>
+   
+   <insert id="insertBoard" parameterType="AnsDto"	>
+      INSERT INTO answerboard
+      VALUES(NULL,#{id},#{title},#{content},SYSDATE(),
+       (SELECT NVL(MAX(refer),0)+1 
+       FROM answerboard alias_for_subquery),
+       0,0,0,'N')
+   </insert>
+  
+</mapper>

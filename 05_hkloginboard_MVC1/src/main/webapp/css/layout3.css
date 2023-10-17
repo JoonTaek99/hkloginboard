@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+*{
+	margin:0px;
+	padding:0px;
+}
+
+.footer{
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	bottom:0px;
+	text-align: center;
+	color:white;
+	line-height: 50px;
+	height: 50px;
+	background-color: #3c3c3c;
+}
+

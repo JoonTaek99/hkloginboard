@@ -21,7 +21,7 @@
 	onload=function(){
 		var str = document.getElementsByTagName("td")[0].childNodes[0].nodeValue;
 		
-		var str2 = "<%=ldto.getTid()%>";
+		var str2 = "<%=dto.getTid()%>";
 		
 		if(str2 != str){
 			document.getElementById("sujung").style.display = "none";
