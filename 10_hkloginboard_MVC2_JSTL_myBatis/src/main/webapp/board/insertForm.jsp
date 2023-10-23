@@ -14,7 +14,7 @@
 		<table border="1">
 			<tr>
 				<th>작성자[ID]</th>
-				<td><input type="text" name="id" pattern="^[a-zA-Z]+$" required="required" /></td>
+				<td><input name="id" type="text" value="${sessionScope.ldto.id}" readonly="readonly" style="border: none;" /></td>
 			</tr>
 			<tr>
 				<th>글제목</th>

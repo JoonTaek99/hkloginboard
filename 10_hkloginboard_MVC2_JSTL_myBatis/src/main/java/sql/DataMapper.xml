@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hk.user">
+
+<!-- 글목록 조회된 결과를 AnsDto에 저장한다. -->
+<!-- 	<select id="boardList" resultType="AnsDto"> -->
+<!-- 		SELECT  seq, id, title, content, regdate, -->
+<!--         refer,step,depth,readcount,delflag -->
+<!-- 		FROM answerboard -->
+<!-- 		ORDER BY refer DESC ,step -->
+<!-- 	</select>   -->
+<!-- 		<where> -->
+<!-- 			<if test="seq!=null"> -->
+<!-- 				seq=#{seq} -->
+<!-- 			</if> -->
+<!-- 		</where> -->
+	<insert id="insertUser" parameterType="UserDto">
+		insert into userinfo
+		values(NULL,#{id},#{name},#{password},
+		#{address},#{email},'Y','USER',SYSDATE())
+	</insert>
+	
+	<select id="idCheck" parameterType="String" resultType="String">
+		SELECT id FROM userinfo WHERE id=#{id}
+	</select>
+	
+	<select id="getLogin" parameterType="UserDto" resultType="UserDto">
+		select id, name, role
+		from userinfo
+		where id=#{id} and password=#{password} and enabled='Y'
+	</select>
+	
+	<select id="getUserInfo" parameterType="String" resultType="UserDto">
+		select id, name, address, email, role, regdate
+		from userinfo
+		where id=#{id}
+	</select>
+	
+	<update id="updateUser" parameterType="UserDto" >
+		update userinfo
+		set address=#{address}, email=#{email}
+		where id=#{id}
+	</update>
+	
+	<delete id="delUser" parameterType="String">
+		update userinfo
+		set enabled = 'N'
+		where id = #{id}
+	</delete>
+	
+	<select id="getAllUserList" resultType="UserDto">
+		select seq, id, name, address, email, role, enabled, regdate
+		from userinfo
+	</select>
+	
+	<update id="userUpdateRole" parameterType="UserDto">
+		update userinfo
+		set role = #{role}
+		where id = #{id} 
+	</update>
+	
+	<select id="getUserList" resultType="UserDto">
+		select seq, id, name, role, regdate
+		from userinfo
+		where enabled = 'Y'
+	</select>
+	
+	
+
+	
+</mapper>
+
+
+
+
+
+
+
+
+

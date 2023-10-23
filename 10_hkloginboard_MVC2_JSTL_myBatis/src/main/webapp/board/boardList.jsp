@@ -1,4 +1,4 @@
-<%@page import="java.time.LocalTime"%>
+<%@include file="../header.jsp" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -9,17 +9,54 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="./css/test.css?<%=LocalTime.now()%>" type="text/css" >
 <style type="text/css">
-/* 	@import url("css/layout1.css"); */
 	a{text-decoration: none;}
 	.active{
 		background-color: yellow;
 	}
-/*  	table{  */
-/*  		border:1px solid gray;  */
-/*  		border-collapse: collapse;  */
-/*  	}  */
+	@charset "UTF-8";
+
+*{
+	margin:0px;
+	padding:0px;
+}
+
+#navbar{
+	background-color:#3c3c3c; 
+	height: 60px; 
+}
+
+.navbar ul{
+	width: 800px;
+	margin-left: 100px;
+}
+
+.navbar li{
+	display: inline-block;
+	margin-top:15px;
+	font-size: 20px;
+	color:white;
+	margin-left:15px;
+}
+
+.navbar a{
+	color:white;
+	text-decoration: none;
+}
+
+.footer{
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	bottom:0px;
+	text-align: center;
+	color:white;
+	line-height: 50px;
+	height: 50px;
+	background-color: #3c3c3c;
+}
+
+
 </style>
 <script type="text/javascript">
 //전체선택박스구현
@@ -121,7 +158,7 @@ function isAllCheck(){
 <%-- 					<a ${(sessionScope.pnum == i||param.pnum == i)?"class='active'":""}  href="boardList.board?pnum=${i}">${i}</a>&nbsp;&nbsp; --%>
 <%-- 				</c:forEach> --%>
 				<a href="boardList.board?pnum=${pMap.prePageNum}">◀</a>
-				<c:forEach begin="${pMap.startPage}" end="${pMap.endPage}" var="i" step="1">
+				<c:forEach begin="1" end="${pcount}" var="i" step="1">
 					<a ${(sessionScope.pnum == i||param.pnum == i)?"class='active'":""}  href="boardList.board?pnum=${i}">${i}</a>&nbsp;&nbsp;
 				</c:forEach>
 				<a href="boardList.board?pnum=${pMap.nextPageNum}">▶</a>
@@ -143,6 +180,7 @@ function isAllCheck(){
 <!-- getId()실행 -->
 <!-- Util util=new Util() -->
 <!-- util.method() -->
+<%@include file="../footer.jsp" %>
 </body>
 </html>
 

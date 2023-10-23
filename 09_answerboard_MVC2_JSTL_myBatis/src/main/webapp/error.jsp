@@ -7,6 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-<a href="boardList.board?pnum=1">글목록</a>
+<h1>시스템오류입니다</h1>
+<h2>오류내용:${msg}</h2>
+<h3><a href="index.jsp"></a></h3>
 </body>
 </html>

@@ -7,6 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-<a href="boardList.board?pnum=1">글목록</a>
+<div class="footer">
+	Copyright 1999-2023. 한경닷컴 All rights reserved.
+</div>
 </body>
 </html>

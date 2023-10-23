@@ -3,19 +3,6 @@
 
 <mapper namespace="com.hk.ans">
 
-<!-- 글목록 조회된 결과를 AnsDto에 저장한다. -->
-<!-- 	<select id="boardList" resultType="AnsDto"> -->
-<!-- 		SELECT  seq, id, title, content, regdate, -->
-<!--         refer,step,depth,readcount,delflag -->
-<!-- 		FROM answerboard -->
-<!-- 		ORDER BY refer DESC ,step -->
-<!-- 	</select>   -->
-<!-- 		<where> -->
-<!-- 			<if test="seq!=null"> -->
-<!-- 				seq=#{seq} -->
-<!-- 			</if> -->
-<!-- 		</where> -->
-	
 	<insert id="insertBoard" parameterType="AnsDto"  >
 		INSERT INTO answerboard 
 		VALUES(NULL,#{id},#{title},#{content},SYSDATE(),
@@ -97,13 +84,8 @@
 		</where>
 	</select>
 
-	
+
 </mapper>
-
-
-
-
-
 
 
 

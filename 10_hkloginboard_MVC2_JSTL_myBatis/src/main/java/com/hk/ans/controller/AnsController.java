@@ -2,6 +2,7 @@ package com.hk.ans.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import com.hk.ans.daos.AnsDao;
 import com.hk.ans.dtos.AnsDto;
+import com.hk.ans.util.Paging;
 
 @WebServlet("*.board")
 public class AnsController extends HttpServlet{
@@ -71,11 +73,15 @@ public class AnsController extends HttpServlet{
 			int pcount=dao.getPCount();
 			request.setAttribute("pcount", pcount);
 			
+			Map<String, Integer> map=Paging.pagingValue(pcount, pnum, 5);
+			request.setAttribute("pMap", map);
+			
 			dispatch("board/boardList.jsp", request, response);
 		}else if(command.equals("/insertForm.board")) {//글추가폼 이동
 			dispatch("board/insertForm.jsp", request, response);
 		}else if(command.equals("/insertBoard.board")) {//글추가하기
 			String id=request.getParameter("id");
+			System.out.println(id);
 			String title=request.getParameter("title");
 			String content=request.getParameter("content");
 			
