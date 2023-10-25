@@ -16,8 +16,12 @@
 			<td><input type="file" name="filename" /></td>
 		</tr>
 		<tr>
-			<th>다운로드:</th>
+			<th>다운로드(확인용):</th>
 			<td><a href="upload/${param.filename}">${param.filename}</a></td>
+		</tr>
+		<tr>
+			<th>다운로드:</th>
+			<td><a href="downloadList.file">파일목록 보기</a></td>
 		</tr>
 		<tr>
 			<td colspan="2"><input type="submit" value="업로드" /></td>

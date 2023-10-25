@@ -1,10 +1,14 @@
 package com.hk.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -73,7 +77,7 @@ public class FileController extends HttpServlet {
                   +(origin_name.substring(origin_name.lastIndexOf(".")));
             System.out.println("저장파일명:"+stored_name);
             
-            // 3. 파일사이즈 구학
+            // 3. 파일사이즈 구하기
             int file_size=(int)multi.getFile("filename").length();
             System.out.println("파일사이즈 : " + file_size);
             
@@ -91,7 +95,92 @@ public class FileController extends HttpServlet {
             }else {
                response.sendRedirect("error.jsp");
             }
+         }else if(command.equals("/downloadList.file")) {
+        	 List<FileDto> list = dao.getFileList();
+        	 request.setAttribute("list", list);
+        	 
+        	 // forward() 메서드
+        	 request.getRequestDispatcher("fileList.jsp").forward(request, response);
+         }else if(command.equals("/download.file")) {
+        	 int seq = Integer.parseInt(request.getParameter("seq"));
+        	 
+        	 // DB에 저장되어 있는 파일의 정보를 가져오기(origin_name, stored_name)
+        	 // origin_name은 다운로드할때 사용자에게 보내줄 이름
+        	 // stored_name은 실제 파일의 경로를 구하기 위함
+        	 FileDto dto = dao.getFileInfo(seq);
+        	 
+        	 //파일의 저장경로
+        	 String saveDirectory = request.getSession().getServletContext()
+        			 								   .getRealPath("upload");
+        	 String filePath = saveDirectory + "/" + dto.getStored_name();
+        	 
+        	 // 다운로드 환경을 위한 설정 --------------시작--------------------
+        	 // - 브라우저로 응답할 때 설정 초기화
+        	 response.reset();
+        	 
+        	 // 다운로드 파일의 형식을 모른다면 octet-stream으로 설정!
+//        	 response.setContentType("text/html");
+//        	 response.setContentType("text/msword");
+        	 response.setContentType("application/octet-stream");
+        	 
+        	 // 파일의 다운로드 버튼을 클릭했을 때 저장화면 창이 나오도록 처리
+        	 // 파일 명을 원본 파일명으로 바꿔주는 과정
+        	 String filename = new String(dto.getOrigin_name()
+        			 								.getBytes("utf-8"), "8859_1");
+        	 response.setHeader("Content-Disposition", 
+        			 					"attachment; filename=" + filename);
+        	 
+        	 // 다운로드 환경을 위한 설정 --------------종료--------------------
+        	 
+        	 // 다운로드할 파일 읽어와서 클라이언트로 출력하기
+        	 // 디렉토리에 있는 저장파일 --> JAVA --> 클라이언트 출력
+        	 
+        	 File file = new File(filePath); // file 객체 생성
+        	 
+        	 // java가 한번에 읽을 수 있는 양의 크기만큼 배열을 생성
+//        	 byte[] b = {1,2,3,4};
+        	 byte[] b = new byte[(int)file.length()];
+        	 
+        	 FileInputStream in = null; // 파일을 읽어들이는 파이프(입력)
+        	 ServletOutputStream out = null; // 내보내기 위한 파이프(출력)
+        	 
+        	 try {
+				in = new FileInputStream(file);
+				out = response.getOutputStream();
+				int numRead = 0; // 읽어들이는 값의 개수를 저장할 변수
+				while((numRead = in.read(b, 0, b.length))!=-1) {
+					out.write(b, 0, numRead); // 출력
+				}
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				out.flush(); // 남은 데이터가 있으면 모두 밀어내서 내보내기
+				out.close();
+				in.close();
+			}
+        	 
          }
    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
