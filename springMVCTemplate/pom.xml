@@ -11,12 +11,11 @@
 	</properties>
 	
 	<dependencies>
-		 <!-- Spring -->
 		<!-- Spring을 사용하기 위한 기본 라이브러리 시작 -->	
 		<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-context</artifactId>
-		<version>${org.springframework-version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
 		</dependency>
 		
 		<dependency>
