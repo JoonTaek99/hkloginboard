@@ -5,16 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hk.calboard.command.InsertCalCommand;
 import com.hk.calboard.dtos.CalDto;
+import com.hk.calboard.mapper.CalMapper;
+import com.hk.calboard.utils.Util;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class CalServiceImp implements ICalService{
 
+	@Autowired
+	private CalMapper calMapper;
 	public Map<String, Integer> makeCalendar(HttpServletRequest request){
 		Map<String, Integer> map = new HashMap<>();
 		// 달력의 날짜
@@ -62,16 +67,29 @@ public class CalServiceImp implements ICalService{
 	@Override
 	public boolean insertCalBoard(InsertCalCommand insertCalCommand) {
 		// command --> dto로  값을 이동
+		// DB에서는 mdate 컬럼, command에서는 year, month... : 12자리로 변환작업
+		String mdate = insertCalCommand.getYear()
+				+Util.isTwo(insertCalCommand.getMonth()+"")
+				+Util.isTwo(insertCalCommand.getDate()+"")
+				+Util.isTwo(insertCalCommand.getHour()+"")
+				+Util.isTwo(insertCalCommand.getMin()+"");
+		// 202311151335 12자리
+		// 20231181110   11자리 
 		
+		CalDto dto = new CalDto();
+		dto.setId(insertCalCommand.getId());
+		dto.setTitle(insertCalCommand.getTitle());
+		dto.setContent(insertCalCommand.getContent());
+		dto.setMdate(mdate);
+		int count = calMapper.insertCalBoard(dto);
 		
-		
-		return true;
+		return count>0?true:false;
 	}
 
 	@Override
 	public List<CalDto> calBoardList(String id, String yyyyMMdd) {
 		// TODO Auto-generated method stub
-		return null;
+		return calMapper.calBoardList(id, yyyyMMdd);
 	}
 
 	@Override
@@ -89,7 +107,7 @@ public class CalServiceImp implements ICalService{
 	@Override
 	public boolean calMulDel(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
-		return false;
+		return calMapper.calMulDel(map);
 	}
 
 	@Override

@@ -18,3 +18,7 @@
 		height: 50px;
 		text-align: center;
 }
+
+.errorField{
+	color:red;
+}
