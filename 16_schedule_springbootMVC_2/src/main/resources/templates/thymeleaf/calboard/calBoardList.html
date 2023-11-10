@@ -50,17 +50,19 @@
 				<tr th:each="dto:${list}">
 					<td><input type="checkbox" name="seq" th:value="${dto.seq}"/></td>
 					<td th:text="${@util.toDates(dto.mdate)}"></td>
-					<td th:text="${dto.title}"></td>
+					<td>
+						<a th:href="@{/schedule/calBoardDetail(seq=${dto.seq})}" th:text="${dto.title}"></a>
+					</td>
 					<td th:text="${#dates.format(dto.regdate, 'yyyy-MM-dd')}"></td>
 				</tr>
 			</th:block>
 			<tr>
 				<td colspan="4">
-					<button type="submit" title="일정삭제" class="btn btn-default" >
+				  <button type="submit" title="일정삭제" class="btn btn-default" >
 						  <span class="glyphicon glyphicon-trash" ></span>
 						</button>
                   <button type="button" title="달력보기" class="btn btn-default" 
-                  			th:onclick="|location.href='@{/schedule/calendar}'|">
+                  			th:onclick="|location.href='@{/schedule/calendar(year=${session.ymdMap.year},month=${session.ymdMap.month})}'|">
                     <span class="glyphicon glyphicon-calendar" ></span>
                   </button>
                   <span class="errorField" th:if="${#fields.hasErrors('seq')}"

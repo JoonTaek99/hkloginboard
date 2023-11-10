@@ -8,12 +8,64 @@
 <style type="text/css">
 	.cal{width:100%;}
 	.cal #thead > div, .cal #tbody > div{display: inline-block; width: 140px;}
-	.cal #tbody > div{height: 120px; vertical-align: top; border-top:1px solid gray;}
+	.cal #tbody > div{
+			height: 120px; 
+			vertical-align: top; 
+			border-top:1px solid gray;
+			position: relative;
+	}
 	#ctitle{text-align: center;}
 	.pen{ width:20px; height:20px;}
+	.d{
+		font-weight:bold;
+		font-size:17px;
+	}
+	#tbody > div > p{background-color:red; color:yellow;}
+	.cp{
+		position: absolute;
+		left: 20px;
+		top: -40px;
+		width:40px;
+		height:40px;
+		border-radius: 20px 20px 20px 1px;
+		color: yellow;
+		background-color: red;
+		line-height: 40px;
+		text-align: center;
+		font-weight: bold;
+	}
 </style>
 <script type="text/javascript">
-
+	$(function(){
+		$(".d").hover(function(){
+			//controller로 전달할 파라미터 yyyyMM를 구함
+			var aDate = $(this); // 현재 마우스가 올라간 a 태그(.d) 구함
+			var year=$(".y").text().trim(); // 년도
+			var month=$(".m").text().trim(); // 월
+			var date = aDate.text().trim(); // 일
+			var yyyyMMdd = year+(month.length<2?"0"+month:month)
+										+(date.length<2?"0"+date:date); //8자리 만들기
+//			alert(yyyyMMdd+"아니야응아니야");
+			if(aDate.nextAll("p").length>0){
+				$.ajax({
+					url:"/schedule/calCountAjax",
+					method:"get",
+					data:{"yyyyMMdd":yyyyMMdd}, // 서버로 전달하는 값
+					dataType:"json", // 서버에서 전달받은 데이터 타입
+					async:false, // ajax() 메서드가 비동기로 실행되는것을 막음 : false 설정
+					success:function(data){ // 성공하면 데이터가 data 변수에 저장됨
+	//					alert(data.count+"응아니아니야");
+						aDate.after("<div class='cp'>"+data.count+"</div>");
+					},
+					error:function(){
+						alert("통신실패ㅋ");
+					}
+				});
+			}
+		}, function(){
+			$(".cp").remove();
+		});
+	});
 </script>
 </head>
 <body>
@@ -40,12 +92,13 @@
 				</th:block>
 				<th:block th:each="i:${#numbers.sequence(1,calMap.lastDay)}">
 					<div>
-						<a class="d" th:text="${i}"
+						<a class="d" th:text="${i}" th:style="'color:'+${@util.fontColor(i, calMap.dayOfWeek)}"
 							th:href="@{/schedule/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}"
 						></a>
 						<a th:href="@{/schedule/addCalBoardForm(year=${calMap.year},month=${calMap.month},date=${i})}">
 							<img class="pen" th:src="@{/img/pen.png}"  />
 						</a>
+						[(${@util.getCalViewList(i,clist)})]
 					</div>
 				</th:block>
 			</div>
