@@ -52,7 +52,8 @@
 			</tr>
 			<tr>
 				<td colspan="4">
-					<button type="button" class="btn">글추가</button>
+					<button type="button" class="btn"
+							th:onclick="|location.href='@{/board/boardInsert}'|">글추가</button>
 					<button type="submit" class="btn">글삭제</button>
 					<span th:if="${#fields.hasErrors('seq')}" th:errors="*{seq}"></span>
 				</td>
