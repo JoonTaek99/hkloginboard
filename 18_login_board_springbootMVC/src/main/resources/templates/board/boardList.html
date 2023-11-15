@@ -50,6 +50,7 @@
 				</td>
 				<td th:text="${#dates.format(dto.regdate, 'yyyy-MM-dd')}"></td>
 			</tr>
+		</th:block>
 			<tr>
 				<td colspan="4">
 					<button type="button" class="btn"
@@ -58,7 +59,6 @@
 					<span th:if="${#fields.hasErrors('seq')}" th:errors="*{seq}"></span>
 				</td>
 			</tr>
-		</th:block>
 	</table>
 </form>
 </div>

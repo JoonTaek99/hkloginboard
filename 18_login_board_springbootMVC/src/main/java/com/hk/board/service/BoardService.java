@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartRequest;
 
 import com.hk.board.command.InsertBoardCommand;
+import com.hk.board.command.UpdateBoardCommand;
 import com.hk.board.dtos.BoardDto;
 import com.hk.board.dtos.FileBoardDto;
 import com.hk.board.mapper.BoardMapper;
@@ -58,6 +59,20 @@ public class BoardService {
 			}
 		}
 		
+	}
+	
+	public BoardDto getBoard(int board_seq) {
+		return boardMapper.getBoard(board_seq);
+	}
+	
+	// 수정하기
+	public boolean updateBoard(UpdateBoardCommand updateBoardCommand) {
+				//command:UI --> DTO:DB
+				BoardDto dto = new BoardDto();
+				dto.setBoard_seq(updateBoardCommand.getBoard_seq());
+				dto.setTitle(updateBoardCommand.getTitle());
+				dto.setContent(updateBoardCommand.getContent());
+				return boardMapper.updateBoard(dto);
 	}
 }
 
